@@ -67,7 +67,10 @@ export default function Layout() {
   const NavContent = () => (
     <>
       <div className={`p-4 border-b ${isDark ? 'border-gray-700' : 'border-pink-100'}`}>
-        <NavLink to="profile" className={`flex items-center gap-3 p-2 rounded-xl transition-colors ${isDark ? 'hover:bg-gray-700' : 'hover:bg-pink-50'}`}>
+        <div 
+          onClick={() => navigate('profile')}
+          className={`flex items-center gap-3 p-2 rounded-xl transition-colors cursor-pointer ${isDark ? 'hover:bg-gray-700' : 'hover:bg-pink-50'}`}
+        >
           <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl flex items-center justify-center">
             <Heart className="w-6 h-6 text-white" />
           </div>
@@ -75,7 +78,7 @@ export default function Layout() {
             <h1 className={`font-bold text-sm ${isDark ? 'text-white' : 'text-gray-800'}`}>Couple HQ</h1>
             <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{couple.partner1.name} & {couple.partner2.name}</p>
           </div>
-        </NavLink>
+        </div>
       </div>
       <nav className="p-2 flex-1 overflow-y-auto scrollbar-hide">
         {navGroups.map((group) => (
@@ -91,66 +94,68 @@ export default function Layout() {
             </button>
             {(expandedGroups.includes(group.title) || !sidebarOpen) && (
               <div className="space-y-1">
-                {group.items.map(({ to, icon: Icon, label }) => (
-                  <NavLink
-                    key={to}
-                    to={to}
-                    end={to === ''}
-                    onClick={() => setMobileOpen(false)}
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
+                {group.items.map(({ to, icon: Icon, label }) => {
+                  const isActive = to === '' ? location.pathname.split('/').pop() === '' : location.pathname.includes(to)
+                  return (
+                    <div
+                      key={to}
+                      onClick={() => {
+                        navigate(to)
+                        setMobileOpen(false)
+                      }}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all cursor-pointer ${
                         isActive
                           ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md'
                           : isDark ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-pink-50'
-                      } ${!sidebarOpen && 'justify-center'}`
-                    }
-                  >
-                    <div className="relative">
-                      <Icon className="w-5 h-5" />
-                      {to === 'love-notes' && unreadNotes > 0 && (
-                        <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                          {unreadNotes}
-                        </span>
-                      )}
+                      } ${!sidebarOpen && 'justify-center'}`}
+                    >
+                      <div className="relative">
+                        <Icon className="w-5 h-5" />
+                        {to === 'love-notes' && unreadNotes > 0 && (
+                          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                            {unreadNotes}
+                          </span>
+                        )}
+                      </div>
+                      {sidebarOpen && <span className="font-medium text-sm">{t(label)}</span>}
                     </div>
-                    {sidebarOpen && <span className="font-medium text-sm">{t(label)}</span>}
-                  </NavLink>
-                ))}
+                  )
+                })}
               </div>
             )}
           </div>
         ))}
       </nav>
       <div className={`p-2 border-t ${isDark ? 'border-gray-700' : 'border-pink-100'}`}>
-        <NavLink
-          to="settings"
-          onClick={() => setMobileOpen(false)}
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
-              isActive
-                ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md'
-                : isDark ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-pink-50'
-            } ${!sidebarOpen && 'justify-center'}`
-          }
+        <div
+          onClick={() => {
+            navigate('settings')
+            setMobileOpen(false)
+          }}
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all cursor-pointer ${
+            location.pathname.includes('settings')
+              ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md'
+              : isDark ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-pink-50'
+          } ${!sidebarOpen && 'justify-center'}`}
         >
           <Settings className="w-5 h-5" />
           {sidebarOpen && <span className="font-medium text-sm">{t('settings')}</span>}
-        </NavLink>
+        </div>
         
-        <NavLink
-          to="help"
-          onClick={() => setMobileOpen(false)}
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all mt-2 ${
-              isActive
-                ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md'
-                : isDark ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-pink-50'
-            } ${!sidebarOpen && 'justify-center'}`
-          }
+        <div
+          onClick={() => {
+            navigate('help')
+            setMobileOpen(false)
+          }}
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all mt-2 cursor-pointer ${
+            location.pathname.includes('help')
+              ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md'
+              : isDark ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-pink-50'
+          } ${!sidebarOpen && 'justify-center'}`}
         >
           <HelpCircle className="w-5 h-5" />
           {sidebarOpen && <span className="font-medium text-sm">{t('help')}</span>}
-        </NavLink>
+        </div>
         
         <button
           onClick={() => {
@@ -186,7 +191,7 @@ export default function Layout() {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50">
           <div className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-          <aside className={`absolute left-0 top-0 h-full w-64 shadow-xl flex flex-col overflow-y-auto ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
+          <aside className={`absolute left-0 top-0 h-full w-64 shadow-xl flex flex-col overflow-y-auto scrollbar-hide ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
             <button onClick={() => setMobileOpen(false)} className={`absolute top-4 right-4 p-2 z-10 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
               <X className="w-5 h-5" />
             </button>
@@ -196,7 +201,7 @@ export default function Layout() {
       )}
 
       {/* Desktop Sidebar */}
-      <aside className={`hidden lg:flex fixed left-0 top-0 h-full shadow-lg flex-col transition-all duration-300 z-40 ${sidebarOpen ? 'w-56' : 'w-16'} ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-pink-100'} border-r`}>
+      <aside className={`hidden lg:flex fixed left-0 top-0 h-full shadow-lg flex-col transition-all duration-300 z-40 overflow-y-auto scrollbar-hide ${sidebarOpen ? 'w-56' : 'w-16'} ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-pink-100'} border-r`}>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className={`absolute -right-3 top-20 w-6 h-6 border rounded-full flex items-center justify-center shadow-sm ${isDark ? 'bg-gray-800 border-gray-600 text-gray-400 hover:text-gray-200' : 'bg-white border-pink-200 text-gray-400 hover:text-gray-600'}`}
