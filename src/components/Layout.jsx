@@ -77,7 +77,7 @@ export default function Layout() {
           </div>
         </NavLink>
       </div>
-      <nav className="p-2 flex-1 overflow-y-auto">
+      <nav className="p-2 flex-1 overflow-y-auto scrollbar-hide">
         {navGroups.map((group) => (
           <div key={group.title} className="mb-2">
             <button
